@@ -1,4 +1,3 @@
-#include <Wire.h>
 #include <Adafruit_DS1841.h>
 #include <Adafruit_GFX.h>
 #include "Adafruit_LEDBackpack.h"
@@ -115,8 +114,7 @@ void setup()
   if (digitalRead(ROTARY_BUTTON) == 0) {
     Serial.println("Entering Configuration Mode");
     WiFi.mode(WIFI_AP);
-    digitalWrite(LED, 1);
-    configMode = true;
+      setConfigMode(true);
   }
   else {
     String ssid = WiFi.SSID();
@@ -125,13 +123,13 @@ void setup()
       Serial.println(ssid);
       WiFi.mode(WIFI_AP_STA);
       WiFi.begin();
+      setConfigMode(false);
       wifiConnected = false;
     }
     else {
       Serial.println("No SSID set. Entering Configuration Mode");
       WiFi.mode(WIFI_AP);
-      digitalWrite(LED, 0);
-      configMode = true;
+      setConfigMode(true);
     }
   }
 
@@ -175,6 +173,13 @@ void loop() {
   }
   
   webServer.handleClient();
+}
+
+void setConfigMode(bool mode) {
+  Serial.print("configMode ");
+  Serial.println(mode);
+  configMode = mode;
+  digitalWrite(LED, configMode ? 0 : 1);
 }
 
 //code from fsbrowser example, consolidated.
