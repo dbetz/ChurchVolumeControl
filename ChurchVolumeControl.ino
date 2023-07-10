@@ -8,6 +8,10 @@
 
 #include "Rotary.h"
 
+#define ROTARY_CLOCK    14 // D5
+#define ROTARY_DATA     12 // D6
+#define ROTARY_BUTTON   13 // D7
+
 #define LED 2
 
 // soft AP
@@ -20,7 +24,7 @@ bool configMode = false;
 ESP8266WebServer webServer;
 
 Adafruit_7segment matrix = Adafruit_7segment();
-Adafruit_DS1841  ds;
+Adafruit_DS1841 ds;
 
 int wiperValue = 0;
 
@@ -41,7 +45,7 @@ void setup()
   }
   Serial.println("DS1841 Found!");
 
-  setupRotaryInterrupt();
+  setupRotaryInterrupt(ROTARY_CLOCK, ROTARY_DATA);
 
   // start the wifi soft AP
   Serial.print("Establishing ");
